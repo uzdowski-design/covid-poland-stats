@@ -67,11 +67,12 @@ const moment = require('moment');
   });
 
   // add a date for data gathering
-  const date = moment().format("YYYY/MM/DD hh:mm");
+  const updateDate = moment().format("YYYY-MM-DD HH:mm");
+  const statsDate = moment().format("YYYY-MM-DD");
 
   // putting all data into one 'data' object
   let data = {
-    ...detailsByRegion, date
+    ...detailsByRegion, statsDate, updateDate
   };
 
   // preview all data (regions info + run date)

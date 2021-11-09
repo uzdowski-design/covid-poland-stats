@@ -1,10 +1,12 @@
 const puppeteer = require('puppeteer');
+const moment = require('moment');
+const fs = require('fs');
 
 (async () => {
 
   // define URLs
-  let detailsDataUrl = 'https://rcb-gis.maps.arcgis.com/apps/dashboards/e496f00bd8b947099ff95d9e26418a2c';
-  const regionDataUrl = 'https://rcb-gis.maps.arcgis.com/apps/opsdashboard/index.html#/a0dd36f27d8c4fd895f4c1c78a6757f0';
+  const detailsDataUrl = 'https://rcb-gis.maps.arcgis.com/apps/dashboards/e496f00bd8b947099ff95d9e26418a2c';
+  const regionDetailedDataUrl = 'https://experience.arcgis.com/experience/b7e217abee754b68ba0e0113be9f0219/';
 
   // create browser and page instances
   let browser = await puppeteer.launch();
@@ -24,7 +26,7 @@ const puppeteer = require('puppeteer');
 
     // return data (find on page, extract data needed and return as object values)
     return {
-      txtDate: $('div.external-html:contains(Dane pochodzą z Ministerstwa Zdrowia z dnia )').find('strong').text(),
+      sourceDate: $('div.external-html:contains(Dane pochodzą z Ministerstwa Zdrowia z dnia )').find('strong').text(),
       infected: toNumber($('div.external-html:contains(osoby zakażone)').eq(0).find('p').last().text()),
       deceased: toNumber($('div.external-html:contains(przypadki śmiertelne)').eq(0).find('p').last().text()),
       recovered: toNumber($('div.external-html:contains(osoby, które wyzdrowiały)').eq(0).find('p').last().text()),
@@ -39,30 +41,70 @@ const puppeteer = require('puppeteer');
     };
   });
 
-  let data = {
-    ...allData,
-  };
 
-  // Extract region data
-  await page.goto(regionDataUrl, { waitUntil: 'networkidle0', timeout: 1000 * 120 });
+  // go to page, wait for it to load and inject jQuery into page
+  await page.goto(regionDetailedDataUrl, { waitUntil: 'networkidle0', timeout: 1000 * 120 });
   await page.waitForTimeout(10000);
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
 
-  const infectedByRegion = await page.evaluate(function () {
-    return $('div.widget.flex-vertical:contains(Osoby zakażone w województwach)')
-      .find('div.external-html')
-      .map(function () { return { infectedCount: $(this).find('strong').eq(0).text().trim(), region: $(this).find('span').eq(1).text().trim() }; })
-      .get();
-  });
-  data.infectedByRegion = infectedByRegion;
-  // In case infected and deceased not found, calculte it from region data
-  if (!data.infected) {
-    data.infected = data.infectedByRegion.map(({ infectedCount }) => infectedCount)
-      .reduce((prev, cur) => {
-        return prev + cur;
-      }, 0);
-  }
 
+  // get details funcion
+  const detailsByRegion = await page.evaluate(function () {
+    const toNumber = (str) => parseInt(str.replace(/\D+/g, '')); // number parser
+
+    // define keys for each region data
+    const dataHeaders = ['regionName', 'population', 'cases', 'deceased', 'casesPer10K', 'deceasedCovidOnly', 'deceasedWithOtherDiseases', 'quarantied', 'testsDone', 'testsPositive', 'testesNegative', 'testsFromPOZ', 'testsOthers', 'recovered'];
+
+    regionsDetails = {};
+    let currCellIndex = 42;
+
+    // get data for 16 regions
+    for (let i = 0; i < 16; i++) {
+      let region = {};
+      // get all the cells in row for each region
+      for (let j = 0; j < 14; j++) {
+        if (j == 0) {
+          region[`${dataHeaders[j]}`] = $(`[slot="vaadin-grid-cell-content-${currCellIndex++}"]`).text();
+        } else
+          region[`${dataHeaders[j]}`] = toNumber($(`[slot="vaadin-grid-cell-content-${currCellIndex++}"]`).text());
+      }
+      // assign regionName as key for each region
+      regionsDetails[removePolishSigns(region["regionName"])] = region;
+    }
+
+    return regionsDetails;
+
+    // remove Polish signs from regionName to use as keys in data object
+    function removePolishSigns(string) {
+      string = string.replace("ę", "e");
+      string = string.replace("ó", "o");
+      string = string.replace("ą", "a");
+      string = string.replace("ś", "s");
+      string = string.replace("ł", "l");
+      string = string.replace("ż", "z");
+      string = string.replace("ź", "z");
+      string = string.replace("ć", "c");
+      string = string.replace("ń", "n");
+      return string;
+    }
+
+  });
+
+  // add a date for data gathering
+  const lastUpdateDate = moment().format("YYYY-MM-DD HH:mm");
+  const statsDate = moment().format("YYYY-MM-DD");
+
+  // putting all data into one 'data' object
+  let data = {
+    statsDate, lastUpdateDate, ...allData, detailsByRegion
+  };
+
+  let jsonData = JSON.stringify(data);
+
+  fs.writeFile('data.json', jsonData, (err) => {
+    if (err) throw err;
+    console.log('File saved')
+  })
 
   console.log(data);
 
