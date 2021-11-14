@@ -1,3 +1,36 @@
+// const data = {
+//   "statsDate": "2021-11-14",
+//   "lastUpdateDate": "2021-11-14 12:23",
+//   "sourceDate": "14.11.2021 10:30",
+//   "infected": 3204515,
+//   "deceased": 78867,
+//   "recovered": 2802616,
+//   "dailyInfected": 14442,
+//   "dailyTested": 54865,
+//   "dailyPositiveTests": 15437,
+//   "dailyDeceased": 46,
+//   "dailyRecovered": 15308,
+//   "dailyQuarantine": 441766,
+//   "detailsByRegion": {
+//     "": {
+//       "regionName": "",
+//       "population": null,
+//       "cases": null,
+//       "deceased": null,
+//       "casesPer10K": null,
+//       "deceasedCovidOnly": null,
+//       "deceasedWithOtherDiseases": null,
+//       "quarantied": null,
+//       "testsDone": null,
+//       "testsPositive": null,
+//       "testesNegative": null,
+//       "testsFromPOZ": null,
+//       "testsOthers": null,
+//       "recovered": null
+//     }
+//   }
+// }
+
 const data = {
   statsDate: '2021-11-10',
   lastUpdateDate: '2021-11-10 00:06',
@@ -255,7 +288,7 @@ const data = {
     lubelskie: {
       regionName: 'lubelskie',
       population: 2117619,
-      cases: null,
+      cases: 1,
       deceased: 64,
       casesPer10K: 763,
       deceasedCovidOnly: 16,
@@ -280,12 +313,11 @@ const checkObjHasData = (obj) => {
   return result
 }
 
-// check if one object has data
-// let result = checkObjHasData(data.detailsByRegion.opolskie)
-// console.log(result)
-
 // check if all regions have all data
+let testPassed = true;
 for (let key in data.detailsByRegion) {
-  console.log(checkObjHasData(data.detailsByRegion[key]))
+  if (!checkObjHasData(data.detailsByRegion[key])) testPassed = false
 }
+
+console.log(testPassed)
 // if all data is there we can update database (so we don't overwrite legitimate data with corrupted data)
