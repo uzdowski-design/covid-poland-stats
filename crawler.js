@@ -48,13 +48,13 @@ const crawler = async () => {
 
 
   // get details funcion
-  const detailsByRegion = await page.evaluate(function () {
+  const regions = await page.evaluate(function () {
     const toNumber = (str) => parseInt(str.replace(/\D+/g, '')); // number parser
 
     // define keys for each region data
     const dataHeaders = ['regionName', 'population', 'cases', 'deceased', 'casesPer10K', 'deceasedCovidOnly', 'deceasedWithOtherDiseases', 'quarantied', 'testsDone', 'testsPositive', 'testsNegative', 'testsFromPOZ', 'testsOthers', 'recovered'];
 
-    regionsDetails = {};
+    regionsDetails = [];
     let currCellIndex = 42;
 
     // get data for 16 regions
@@ -68,7 +68,8 @@ const crawler = async () => {
           region[`${dataHeaders[j]}`] = toNumber($(`[slot="vaadin-grid-cell-content-${currCellIndex++}"]`).text());
       }
       // assign regionName as key for each region
-      regionsDetails[removePolishSigns(region["regionName"])] = region;
+      regionsDetails.push(region)
+      // regionsDetails[removePolishSigns(region["regionName"])] = region;
     }
 
     return regionsDetails;
@@ -95,7 +96,7 @@ const crawler = async () => {
 
   // putting all data into one 'data' object
   let data = {
-    statsDate, lastUpdateDate, ...allData, detailsByRegion
+    statsDate, lastUpdateDate, ...allData, regions
   };
 
   // close browser at finish
