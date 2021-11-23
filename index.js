@@ -1,10 +1,12 @@
 const crawler = require('./crawler');
+const compareAndSaveResults = require('./resultCheck');
 const fs = require('fs');
 
 crawler()
   .then(data => {
     saveTestFile(data)
     console.log(data)
+    compareAndSaveResults(data)
   })
   .catch(err => console.log(err))
 
