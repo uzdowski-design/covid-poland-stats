@@ -1,5 +1,14 @@
 const fs = require('fs');
 
+const saveFile = (data, fileName) => {
+  let jsonData = JSON.stringify(data);
+
+  fs.writeFile(fileName, jsonData, (err) => {
+    if (err) throw err;
+    console.log(`${fileName} saved.`)
+  })
+}
+
 // check if data is already in database (to avoid overwriting already existing data multiple times)
 const isDataAlreadyInDB = (newData, dbData) => {
   let dbStatsDates = []
@@ -7,14 +16,6 @@ const isDataAlreadyInDB = (newData, dbData) => {
   return dbStatsDates.includes(newData.statsDate) ? true : false;
 }
 
-const saveDBFile = (data) => {
-  let jsonData = JSON.stringify(data);
-
-  fs.writeFile('dataFromDB.json', jsonData, (err) => {
-    if (err) throw err;
-    console.log('DB data file saved')
-  })
-}
 
 // check if new data scrapped is complete (no nulls or undefined caused by issues with scrapping)
 const testNewDataComplete = (data) => {
@@ -38,4 +39,18 @@ const testNewDataComplete = (data) => {
 }
 
 
-module.exports = { isDataAlreadyInDB, saveDBFile, testNewDataComplete }
+// remove Polish signs from regionName to use as keys in data object
+function removePolishSigns(string) {
+  string = string.replace("ę", "e");
+  string = string.replace("ó", "o");
+  string = string.replace("ą", "a");
+  string = string.replace("ś", "s");
+  string = string.replace("ł", "l");
+  string = string.replace("ż", "z");
+  string = string.replace("ź", "z");
+  string = string.replace("ć", "c");
+  string = string.replace("ń", "n");
+  return string;
+}
+
+module.exports = { isDataAlreadyInDB, saveFile, testNewDataComplete, removePolishSigns }

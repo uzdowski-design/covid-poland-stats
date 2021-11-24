@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const moment = require('moment');
+// const moment = require('moment');
 
 const crawler = async () => {
 
@@ -52,7 +52,7 @@ const crawler = async () => {
     const toNumber = (str) => parseInt(str.replace(/\D+/g, '')); // number parser
 
     // define keys for each region data
-    const dataHeaders = ['regionName', 'population', 'cases', 'deceased', 'casesPer10K', 'deceasedCovidOnly', 'deceasedWithOtherDiseases', 'quarantied', 'testsDone', 'testsPositive', 'testsNegative', 'testsFromPOZ', 'testsOthers', 'recovered'];
+    const dataHeaders = ['name', 'population', 'cases', 'deceased', 'casesPer10K', 'deceasedCovidOnly', 'deceasedWithOtherDiseases', 'quarantied', 'testsDone', 'testsPositive', 'testsNegative', 'testsFromPOZ', 'testsOthers', 'recovered'];
 
     regionsDetails = [];
     let currCellIndex = 42;
@@ -69,33 +69,15 @@ const crawler = async () => {
       }
       // assign regionName as key for each region
       regionsDetails.push(region)
-      // regionsDetails[removePolishSigns(region["regionName"])] = region;
+      // regionsDetails[removePolishSigns(region["regionName"])] = region; // nested objects method
     }
 
     return regionsDetails;
 
-    // remove Polish signs from regionName to use as keys in data object
-    function removePolishSigns(string) {
-      string = string.replace("ę", "e");
-      string = string.replace("ó", "o");
-      string = string.replace("ą", "a");
-      string = string.replace("ś", "s");
-      string = string.replace("ł", "l");
-      string = string.replace("ż", "z");
-      string = string.replace("ź", "z");
-      string = string.replace("ć", "c");
-      string = string.replace("ń", "n");
-      return string;
-    }
-
   });
 
-  // add a date for data gathering
-  // const lastUpdateDate = moment().format("YYYY-MM-DD HH:mm");
-  // console.log(allData.sourceDate.substr(0, 10));
-  // console.log('New Source Date: ', moment(allData.sourceDate.substr(0, 10)).format("YYYY-MM-DD"));
+  // create date only field
   const statsDate = allData.sourceDate.split(" ")[0].split(".").reverse().join("-")
-  // const statsDate = moment().format("YYYY-MM-DD");
 
   // putting all data into one 'data' object
   let data = {

@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const { isDataAlreadyInDB, saveDBFile, testNewDataComplete } = require('./helpers')
+const { isDataAlreadyInDB, testNewDataComplete } = require('./helpers')
 
 const mongoURI = process.env.MONGODB_URI
 
