@@ -91,12 +91,15 @@ const crawler = async () => {
   });
 
   // add a date for data gathering
-  const lastUpdateDate = moment().format("YYYY-MM-DD HH:mm");
-  const statsDate = moment().format("YYYY-MM-DD");
+  // const lastUpdateDate = moment().format("YYYY-MM-DD HH:mm");
+  // console.log(allData.sourceDate.substr(0, 10));
+  // console.log('New Source Date: ', moment(allData.sourceDate.substr(0, 10)).format("YYYY-MM-DD"));
+  const statsDate = allData.sourceDate.split(" ")[0].split(".").reverse().join("-")
+  // const statsDate = moment().format("YYYY-MM-DD");
 
   // putting all data into one 'data' object
   let data = {
-    statsDate, lastUpdateDate, ...allData, regions
+    statsDate, ...allData, regions
   };
 
   // close browser at finish
