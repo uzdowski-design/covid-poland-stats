@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const statsSchema = new Schema({
-  statsDate: { type: String },
+  statsDate: { type: Date },
+  statsDay: { type: String },
   updated: { type: Date, default: Date.now },
   sourceDate: { type: String },
   infected: { type: Number },

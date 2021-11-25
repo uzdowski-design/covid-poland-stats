@@ -11,9 +11,9 @@ const saveFile = (data, fileName) => {
 
 // check if data is already in database (to avoid overwriting already existing data multiple times)
 const isDataAlreadyInDB = (newData, dbData) => {
-  let dbStatsDates = []
-  dbData.forEach((item) => dbStatsDates.push(item.statsDate));
-  return dbStatsDates.includes(newData.statsDate) ? true : false;
+  let dbStatsDays = []
+  dbData.forEach((item) => dbStatsDays.push(item.statsDay));
+  return dbStatsDays.includes(newData.statsDay) ? true : false;
 }
 
 

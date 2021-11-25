@@ -77,11 +77,12 @@ const crawler = async () => {
   });
 
   // create date only field
-  const statsDate = allData.sourceDate.split(" ")[0].split(".").reverse().join("-")
+  const statsDay = allData.sourceDate.split(" ")[0].split(".").reverse().join("-")
+  const statsDate = new Date(statsDay)
 
   // putting all data into one 'data' object
   let data = {
-    statsDate, ...allData, regions
+    statsDate, statsDay, ...allData, regions
   };
 
   // close browser at finish
