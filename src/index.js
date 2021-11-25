@@ -1,10 +1,11 @@
+const cron = require('node-cron')
 const crawler = require('./crawler');
 const compareAndSaveResults = require('./resultCheck');
-// const { saveFile } = require('./helpers')
 
-crawler()
-  .then(data => {
-    // saveFile(data, 'data.json')
-    compareAndSaveResults(data)
-  })
-  .catch(err => console.log(err))
+cron.schedule('* */4 * * *', function () {
+  crawler()
+    .then(data => {
+      compareAndSaveResults(data)
+    })
+    .catch(err => console.log(err))
+})

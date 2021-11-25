@@ -12,6 +12,7 @@
     "dotenv": "^10.0.0",
     "moment": "^2.29.1",
     "mongoose": "^6.0.13",
+    "node-cron": "^3.0.0",
     "puppeteer": "^11.0.0"
   },
   "description": ""

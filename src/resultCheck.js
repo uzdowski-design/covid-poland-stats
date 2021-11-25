@@ -26,8 +26,8 @@ const compareAndSaveResults = dataObj => {
           return newStats.save().catch(err => console.log(err))
         } else console.log('Current day stats already found in database.')
       })
-      .then(() => mongoose.disconnect())
-      .then(() => console.log('MongoDB Disconnected.'))
+      // .then(() => mongoose.disconnect())
+      // .then(() => console.log('MongoDB Disconnected.'))
       .catch(err => console.log(err))
   } catch (err) {
     console.log(err)
