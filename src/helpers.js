@@ -39,6 +39,10 @@ const testNewDataComplete = (data) => {
   return testPassed
 }
 
+function isValidDate(d) {
+  return d instanceof Date && !isNaN(d);
+}
+
 
 // remove Polish signs from regionName to use as keys in data object
 function removePolishSigns(string) {
@@ -54,4 +58,4 @@ function removePolishSigns(string) {
   return string;
 }
 
-module.exports = { isDataAlreadyInDB, saveFile, testNewDataComplete, removePolishSigns }
+module.exports = { isDataAlreadyInDB, saveFile, testNewDataComplete, removePolishSigns, isValidDate }

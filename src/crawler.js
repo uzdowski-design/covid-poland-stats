@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const { isValidDate } = require('./helpers');
 
 const crawler = async () => {
 
@@ -42,7 +43,7 @@ const crawler = async () => {
 
   // go to page, wait for it to load and inject jQuery into page
   await page.goto(regionDetailedDataUrl, { waitUntil: 'networkidle0', timeout: 1000 * 120 });
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(15000);
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
 
 
@@ -77,7 +78,8 @@ const crawler = async () => {
 
   // create date only field
   const statsDay = allData.sourceDate.split(" ")[0].split(".").reverse().join("-")
-  const statsDate = new Date(statsDay)
+  const statsDate = isValidDate(new Date(statsDay)) ? new Date(statsDay) : new Date();
+
 
   // putting all data into one 'data' object
   let data = {
