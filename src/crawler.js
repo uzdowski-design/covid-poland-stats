@@ -13,6 +13,7 @@ const crawler = async () => {
 
   // go to page, wait for it to load, inject jQuery into page
   await page.goto(detailsDataUrl, { waitUntil: 'networkidle0' });
+  // await page.waitForTimeout(10000);
   // await page.waitForSelector('full-container');
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
 
@@ -43,7 +44,7 @@ const crawler = async () => {
 
   // go to page, wait for it to load and inject jQuery into page
   await page.goto(regionDetailedDataUrl, { waitUntil: 'networkidle0', timeout: 1000 * 120 });
-  await page.waitForTimeout(15000);
+  await page.waitForTimeout(10000);
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
 
 
