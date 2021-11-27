@@ -7,7 +7,7 @@ const crawler = async () => {
   const regionDetailedDataUrl = 'https://experience.arcgis.com/experience/b7e217abee754b68ba0e0113be9f0219/';
 
   // create browser and page instances
-  let browser = await puppeteer.launch();
+  let browser = await puppeteer.launch({ args: ['--no-sandbox'] });
   let page = await browser.newPage();
 
   // go to page, wait for it to load, inject jQuery into page
