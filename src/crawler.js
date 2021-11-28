@@ -35,7 +35,8 @@ const crawler = async () => {
       dailyTested: toNumber($('div.external-html:contains(wykonane testy:)').find('p').last().text()),
       dailyPositiveTests: toNumber($('div.external-html:contains(testy z wynikiem pozytywnym)').find('p').last().text()),
       dailyDeceased: toNumber($('div.external-html:contains(przypadki śmiertelne)').eq(1).find('p').last().text()),
-      // dailyDeceasedDueToCovid: allData.ZGONY_COVID || "",
+      dailyDeceasedCovidOnly: toNumber($('div.external-html:contains(wyłącznie z powodu COVID-19)').eq(0).find('p').last().text()),
+      dailyDeceasedCovidWithOtherDiseases: toNumber($('div.external-html:contains(choroby współistniejące wraz z COVID-19)').eq(0).find('p').last().text()),
       dailyRecovered: toNumber($('div.external-html:contains(osoby, które wyzdrowiały)').eq(1).find('p').last().text()),
       dailyQuarantine: toNumber($('div.external-html:contains(osoby na kwarantannie)').find('p').last().text()),
     };

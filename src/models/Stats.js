@@ -13,6 +13,8 @@ const statsSchema = new Schema({
   dailyTested: { type: Number },
   dailyPositiveTests: { type: Number },
   dailyDeceased: { type: Number },
+  dailyDeceasedCovidOnly: { type: Number },
+  dailyDeceasedCovidWithOtherDiseases: { type: Number },
   dailyRecovered: { type: Number },
   dailyQuarantine: { type: Number },
   regions: { type: Array }
