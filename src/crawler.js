@@ -27,11 +27,11 @@ const crawler = async () => {
     // return data (find on page, extract data needed and return as object values)
     return {
       sourceDate: $('div.external-html:contains(Dane pochodzą z Ministerstwa Zdrowia z dnia )').find('strong').text(),
-      infected: toNumber($('div.external-html:contains(osoby zakażone)').eq(0).find('p').last().text()),
+      infected: toNumber($('div.external-html:contains(liczba zakażeń od 4 marca 2020)').eq(0).find('p').last().text()),
       deceased: toNumber($('div.external-html:contains(przypadki śmiertelne)').eq(0).find('p').last().text()),
       recovered: toNumber($('div.external-html:contains(osoby, które wyzdrowiały)').eq(0).find('p').last().text()),
       // activeCase: toNumber(),
-      dailyInfected: toNumber($('div.external-html:contains(osoby zakażone)').eq(1).find('p').last().text()),
+      dailyInfected: toNumber($('div.external-html:contains(liczba zakażeń:)').eq(0).find('p').last().text()),
       dailyTested: toNumber($('div.external-html:contains(wykonane testy:)').find('p').last().text()),
       dailyPositiveTests: toNumber($('div.external-html:contains(testy z wynikiem pozytywnym)').find('p').last().text()),
       dailyDeceased: toNumber($('div.external-html:contains(przypadki śmiertelne)').eq(1).find('p').last().text()),
@@ -57,7 +57,7 @@ const crawler = async () => {
     const dataHeaders = ['name', 'population', 'cases', 'deceased', 'casesPer10K', 'deceasedCovidOnly', 'deceasedWithOtherDiseases', 'quarantied', 'testsDone', 'testsPositive', 'testsNegative', 'testsFromPOZ', 'testsOthers', 'recovered'];
 
     regionsDetails = [];
-    let currCellIndex = 42;
+    let currCellIndex = 54;
 
     // get data for 16 regions
     for (let i = 0; i < 16; i++) {
@@ -70,7 +70,7 @@ const crawler = async () => {
           region[`${dataHeaders[j]}`] = toNumber($(`[slot="vaadin-grid-cell-content-${currCellIndex++}"]`).text());
       }
       // assign regionName as key for each region
-      regionsDetails.push(region)
+      regionsDetails.push(region);
       // regionsDetails[removePolishSigns(region["regionName"])] = region; // nested objects method
     }
 
@@ -79,7 +79,7 @@ const crawler = async () => {
   });
 
   // create date only field
-  const statsDay = allData.sourceDate.split(" ")[0].split(".").reverse().join("-")
+  const statsDay = allData.sourceDate.split(" ")[0].split(".").reverse().join("-");
   const statsDate = isValidDate(new Date(statsDay)) ? new Date(statsDay) : new Date();
 
 
@@ -90,7 +90,7 @@ const crawler = async () => {
 
   // close browser at finish
   await browser.close();
-  return data
+  return data;
 
 };
 
