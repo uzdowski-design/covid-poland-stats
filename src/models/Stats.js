@@ -6,10 +6,14 @@ const statsSchema = new Schema({
   statsDay: { type: String },
   updated: { type: Date, default: Date.now },
   sourceDate: { type: String },
-  infected: { type: Number },
+  totalInfected: { type: Number },
+  newlyInfected: { type: Number },
+  reInfected: { type: Number },
   deceased: { type: Number },
   recovered: { type: Number },
-  dailyInfected: { type: Number },
+  dailyTotalInfected: { type: Number },
+  dailyNewlyInfected: { type: Number },
+  dailyReInfected: { type: Number },
   dailyTested: { type: Number },
   dailyPositiveTests: { type: Number },
   dailyDeceased: { type: Number },
@@ -20,4 +24,4 @@ const statsSchema = new Schema({
   regions: { type: Array }
 })
 
-module.exports = mongoose.model('Stats', statsSchema, 'polandDaily');
+module.exports = mongoose.model('Stats', statsSchema, 'polandDailyNew');
