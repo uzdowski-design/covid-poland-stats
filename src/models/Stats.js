@@ -22,6 +22,6 @@ const statsSchema = new Schema({
   dailyRecovered: { type: Number },
   dailyQuarantine: { type: Number },
   regions: { type: Array }
-})
+});
 
-module.exports = mongoose.model('Stats', statsSchema, 'polandDailyNew');
+module.exports = mongoose.model('Stats', statsSchema, 'polandDailyStats');
