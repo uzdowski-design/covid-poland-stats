@@ -20,7 +20,7 @@ const isDataAlreadyInDB = (newData, dbData) => {
 
 // check if new data scrapped is complete (no nulls or undefined caused by issues with scrapping)
 const testNewDataComplete = (data) => {
-  if (data.infected == null || data.dailyQuarantine == null) return false
+  if (Object.values(data).some(val => (val === null || val === undefined ))) return false;
   // check if region object has all data (no nulls or undefined)
   const checkObjHasData = (obj) => {
     let result = true;
