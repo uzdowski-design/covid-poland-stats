@@ -9,7 +9,15 @@ If scrapped data is not yet in database it will write it.
 
 ## Getting Started
 
-First, run the development server:
+Install all dependencies:
+
+```
+npm install
+# or
+yarn install
+```
+
+Run the development server on localhost:
 
 ```bash
 npm run dev
