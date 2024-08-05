@@ -7,6 +7,8 @@ Collecting country totals and details for all voivodeships.
 The script is scrapping two dashboards and validates data for any corruption.
 If scrapped data is not yet in database it will write it.
 
+![Web Scraping](./scrapper.png)
+
 ## Getting Started
 
 Install all dependencies:
